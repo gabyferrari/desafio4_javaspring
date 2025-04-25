@@ -3,6 +3,7 @@ package com.devsuperior.dsmeta.services;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,24 @@ public class SaleService {
 		return new SaleMinDTO(entity);
 	}
 	
-	public Page<SaleMinDTO> getReport(LocalDate initialDate, LocalDate finalDate, String name, Pageable pageable) { 
+	public Page<SaleMinDTO> getReport(String initialDate, String finalDate, String name, Pageable pageable) { 
 		
-		if(initialDate == null) {
-			LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		LocalDate dataInitial = convertStringToLocalDate(initialDate);
+		LocalDate dataFinal = convertStringToLocalDate(finalDate);
+		
+		if(dataInitial == null) {
+			 dataInitial = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
 		}
-		if(finalDate == null) {	
-			finalDate = LocalDate.now().minusYears(1);
+		if(dataFinal == null) {	
+			dataFinal = LocalDate.now().minusYears(1L);
 		}
 			
-		return  repository.searchBySale(initialDate, finalDate, name, pageable);
+		return  repository.searchBySale(dataInitial, dataFinal, name, pageable);
 	}
+	
+	private LocalDate convertStringToLocalDate(String dateString) {
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+         return LocalDate.parse(dateString, formatter);
+    }
+
 }

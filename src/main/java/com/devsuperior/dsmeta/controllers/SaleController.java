@@ -1,5 +1,8 @@
 package com.devsuperior.dsmeta.controllers;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SellerMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 
 @RestController
@@ -41,8 +45,35 @@ public class SaleController {
 	        Page<SaleMinDTO> dto = service.getReport(minDate, maxDate, name, pageable);
 	        return ResponseEntity.ok(dto);
 		}
-   
 	}
+	
+	@GetMapping(value = "/summary")
+	public ResponseEntity<List<SellerMinDTO>> getSummary(
+			@RequestParam(name = "minDate", required = false) String minDate,
+			@RequestParam(name = "maxDate", required = false) String maxDate) {
+		
+		if (minDate == null || maxDate == null) {
+			List<SellerMinDTO> dto = service.getReportTwelveMonth2();
+	        return ResponseEntity.ok(dto);
+		}
+		else {
+			List<SellerMinDTO> dto = service.getSummary(minDate, maxDate);
+			return ResponseEntity.ok(dto);
+		}
+	
+//		List<SellerMinDTO> dto = service.getSummary(minDate, maxDate);
+//		
+//		return ResponseEntity.ok(dto);
+	}
+	
+//	@GetMapping(value = "/summary")
+//	public ResponseEntity<Page<SellerMinDTO>> getSummary(
+//			@RequestParam(name = "minDate", required = false) String minDate,
+//			@RequestParam(name = "maxDate", required = false) String maxDate, Pageable pageable) {
+//		
+//		Page<SellerMinDTO> dto = service.getSummary(minDate, maxDate, pageable);
+//		return ResponseEntity.ok(dto);
+//	}
 	
 //	@GetMapping(value = "/report")
 //	public ResponseEntity<Page<SaleMinDTO>> getReport(
@@ -65,10 +96,5 @@ public class SaleController {
 //		List<SaleMinDTO> dto = service.getReportTwelveMonth();
 //        return ResponseEntity.ok(dto);
 //	}
-
-	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
-	}
+	
 }

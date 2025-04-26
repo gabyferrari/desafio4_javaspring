@@ -11,39 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.devsuperior.dsmeta.dto.SellerMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 
-import projections.SellerMinProjection;
-
-public interface SaleRepository extends JpaRepository<Sale, Long> {
-	
-//	@Query(value = "SELECT new com.devsuperior.dsmeta.dto.SaleMinDTO(obj.id, obj.date, obj.amount, obj.seller.name) "
-//			+ "FROM Sale obj "
-//			+ "WHERE obj.date BETWEEN :initialDate AND :finalDate "
-//			+ "AND LOWER(obj.seller.name) LIKE LOWER(CONCAT('%', :name, '%')) "
-//			+ "ORDER BY obj.date DESC")
-//	Page<SaleMinDTO> searchBySale(@Param("initialDate") LocalDate initialDate, 
-//								  @Param("finalDate") LocalDate finalDate, 
-//								  @Param("name") String name, Pageable pageable);
-	
-//	@Query(value = "SELECT obj FROM Sale obj JOIN FETCH obj.seller "  
-//	        + "WHERE (:initialDate IS NULL OR obj.date >= :initialDate) " 
-//	        + "AND (:finalDate IS NULL OR obj.date <= :finalDate) " 
-//	        + "AND (:name IS NULL OR LOWER(obj.seller.name) LIKE LOWER(CONCAT('%', :name, '%')))",
-//	        countQuery = "SELECT obj FROM Sale obj JOIN FETCH obj.seller " 
-//	        		+ "WHERE (:initialDate IS NULL OR obj.date >= :initialDate) " 
-//	        		+ "AND (:finalDate IS NULL OR obj.date <= :finalDate) "
-//	        		+ "AND (:name IS NULL OR LOWER(obj.seller.name) LIKE LOWER(CONCAT('%', :name, '%')))")
-//	Page<Sale> searchBySale(LocalDate initialDate, LocalDate finalDate, String name, Pageable pageable);
-
-	
-//	@Query(value = "SELECT obj FROM Sale obj JOIN FETCH obj.seller "  
-//	        + "WHERE obj.date >= :initialDate " 
-//	        + "AND obj.date <= :finalDate " 
-//	        + "AND LOWER(obj.seller.name) LIKE LOWER(CONCAT('%', :name, '%'))",
-//	        countQuery = "SELECT obj FROM Sale obj JOIN FETCH obj.seller " 
-//	        		+ "WHERE obj.date >= :initialDate "
-//	        		+ "AND obj.date <= :finalDate "
-//	        		+ "AND LOWER(obj.seller.name) LIKE LOWER(CONCAT('%', :name, '%'))")
-//	Page<Sale> searchBySale(LocalDate initialDate, LocalDate finalDate, String name, Pageable pageable);
+public interface SaleRepository extends JpaRepository<Sale, Long> {	
 	
 	@Query(value = "SELECT obj FROM Sale obj JOIN FETCH obj.seller "  
 	        + "WHERE obj.date BETWEEN :minDate AND :maxDate " 
@@ -51,16 +19,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 	        countQuery = "SELECT COUNT(obj) FROM Sale obj JOIN obj.seller " )
 	Page<Sale> searchBySale(LocalDate minDate, LocalDate maxDate, String name, Pageable pageable);
 	
-//	List<Sale> findByDateAfter(LocalDate date);
-	
 	Page<Sale> findByDateAfter(LocalDate date, Pageable pageable);
-	
-//	@Query(nativeQuery = true, value = "SELECT tb_seller.name, SUM(amount) AS total "
-//			+ "FROM tb_seller "
-//			+ "INNER JOIN tb_sales ON tb_sales.seller_id = tb_seller.id "  
-//	        + "WHERE tb_sales.date BETWEEN :minDate AND :maxDate "
-//	        + "GROUP BY obj.seller.name")
-//	Page<SellerMinProjection> searchBySeller(LocalDate minDate, LocalDate maxDate, Pageable pageable);
 	
 	@Query(value = "SELECT new com.devsuperior.dsmeta.dto.SellerMinDTO(obj.seller.name, SUM(obj.amount)) "
 			+ "FROM Sale obj "  

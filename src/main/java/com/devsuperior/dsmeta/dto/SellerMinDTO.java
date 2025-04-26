@@ -2,8 +2,6 @@ package com.devsuperior.dsmeta.dto;
 
 import com.devsuperior.dsmeta.entities.Sale;
 
-import projections.SellerMinProjection;
-
 public class SellerMinDTO {
 	
 	private String sellerName;
@@ -21,11 +19,6 @@ public class SellerMinDTO {
 	public SellerMinDTO(Sale entity) {
 		sellerName = entity.getSeller().getName();
 		total = entity.getAmount();
-	}
-	
-	public SellerMinDTO(SellerMinProjection entity) {
-		sellerName = entity.getSellerName();
-		total = entity.getTotal();
 	}
 
 	public String getSellerName() {

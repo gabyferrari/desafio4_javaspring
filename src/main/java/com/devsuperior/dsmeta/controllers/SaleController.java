@@ -1,6 +1,5 @@
 package com.devsuperior.dsmeta.controllers;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,48 +52,12 @@ public class SaleController {
 			@RequestParam(name = "maxDate", required = false) String maxDate) {
 		
 		if (minDate == null || maxDate == null) {
-			List<SellerMinDTO> dto = service.getReportTwelveMonth2();
+			List<SellerMinDTO> dto = service.getSummaryTwelveMonth();
 	        return ResponseEntity.ok(dto);
 		}
 		else {
 			List<SellerMinDTO> dto = service.getSummary(minDate, maxDate);
 			return ResponseEntity.ok(dto);
 		}
-	
-//		List<SellerMinDTO> dto = service.getSummary(minDate, maxDate);
-//		
-//		return ResponseEntity.ok(dto);
-	}
-	
-//	@GetMapping(value = "/summary")
-//	public ResponseEntity<Page<SellerMinDTO>> getSummary(
-//			@RequestParam(name = "minDate", required = false) String minDate,
-//			@RequestParam(name = "maxDate", required = false) String maxDate, Pageable pageable) {
-//		
-//		Page<SellerMinDTO> dto = service.getSummary(minDate, maxDate, pageable);
-//		return ResponseEntity.ok(dto);
-//	}
-	
-//	@GetMapping(value = "/report")
-//	public ResponseEntity<Page<SaleMinDTO>> getReport(
-//			@RequestParam(name = "minDate", required = false) String minDate,
-//			@RequestParam(name = "maxDate", required = false) String maxDate,
-//			@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
-//		Page<SaleMinDTO> dto = service.getReport(minDate, maxDate, name, pageable);
-//        return ResponseEntity.ok(dto);
-//   
-//	}
-	
-//	@GetMapping(value = "/reports")
-//	public ResponseEntity<Page<SaleMinDTO>> getReportTwelveMonth(Pageable pageable) {
-//		Page<SaleMinDTO> dto = service.getReportTwelveMonth(pageable);
-//        return ResponseEntity.ok(dto);
-//	}
-	
-//	@GetMapping(value = "/reports")
-//	public ResponseEntity<List<SaleMinDTO>> getReportTwelveMonth() {
-//		List<SaleMinDTO> dto = service.getReportTwelveMonth();
-//        return ResponseEntity.ok(dto);
-//	}
-	
+	}	
 }

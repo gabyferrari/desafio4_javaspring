@@ -11,6 +11,10 @@ public class SaleMinDTO {
 	private LocalDate date;
 	private String sellerName;
 	
+	public SaleMinDTO() {
+		
+	}
+	
 	public SaleMinDTO(Long id, Double amount, LocalDate date, String sellerName) {
 		this.id = id;
 		this.amount = amount;

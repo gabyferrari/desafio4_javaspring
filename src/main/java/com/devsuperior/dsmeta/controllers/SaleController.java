@@ -3,8 +3,6 @@ package com.devsuperior.dsmeta.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +28,43 @@ public class SaleController {
 
 	@GetMapping(value = "/report")
 	public ResponseEntity<Page<SaleMinDTO>> getReport(
-			@RequestParam(value = "initialDate", required = false) @DateTimeFormat(iso = ISO.DATE_TIME) String initialDate,
-			@RequestParam(value = "finalDate", required = false) @DateTimeFormat(iso = ISO.DATE_TIME) String finalDate,
-			@RequestParam(value = "name", defaultValue = "") String name, Pageable pageable) {
-		Page<SaleMinDTO> dto = service.getReport(initialDate, finalDate, name, pageable);
-        return ResponseEntity.ok(dto);
+			@RequestParam(name = "minDate", required = false) String minDate,
+			@RequestParam(name = "maxDate", required = false) String maxDate,
+			@RequestParam(name = "name", defaultValue = "") String name, 
+			Pageable pageable) {
+		
+		if (minDate == null || maxDate == null || name == null) {
+			Page<SaleMinDTO> dto = service.getReportTwelveMonth(pageable);
+	        return ResponseEntity.ok(dto);
+		}
+		else {
+	        Page<SaleMinDTO> dto = service.getReport(minDate, maxDate, name, pageable);
+	        return ResponseEntity.ok(dto);
+		}
+   
 	}
+	
+//	@GetMapping(value = "/report")
+//	public ResponseEntity<Page<SaleMinDTO>> getReport(
+//			@RequestParam(name = "minDate", required = false) String minDate,
+//			@RequestParam(name = "maxDate", required = false) String maxDate,
+//			@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
+//		Page<SaleMinDTO> dto = service.getReport(minDate, maxDate, name, pageable);
+//        return ResponseEntity.ok(dto);
+//   
+//	}
+	
+//	@GetMapping(value = "/reports")
+//	public ResponseEntity<Page<SaleMinDTO>> getReportTwelveMonth(Pageable pageable) {
+//		Page<SaleMinDTO> dto = service.getReportTwelveMonth(pageable);
+//        return ResponseEntity.ok(dto);
+//	}
+	
+//	@GetMapping(value = "/reports")
+//	public ResponseEntity<List<SaleMinDTO>> getReportTwelveMonth() {
+//		List<SaleMinDTO> dto = service.getReportTwelveMonth();
+//        return ResponseEntity.ok(dto);
+//	}
 
 	@GetMapping(value = "/summary")
 	public ResponseEntity<?> getSummary() {
